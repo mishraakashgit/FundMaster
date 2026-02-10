@@ -6,7 +6,7 @@ namespace FundNavTracker.Services
     public interface INavService
     {
         Task<IEnumerable<FundNavDto>> GetLatestNavsAsync(string? search = null);
-        Task<FundNavDto> GetNavByFundCodeAsync(string fundCode);
+        Task<FundNavDto?> GetNavByFundCodeAsync(string fundCode);
     }
 
     public class FundNavDto
