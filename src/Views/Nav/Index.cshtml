@@ -1,0 +1,44 @@
+@using System.Linq
+@model IEnumerable<FundNavTracker.Services.FundNavDto>
+@{
+    ViewData["Title"] = "Fund NAVs";
+}
+<h2 class="mb-3">Fund NAVs</h2>
+<form method="get" class="row g-2 align-items-center mb-3">
+    <div class="col-sm-6 col-md-4">
+        <input class="form-control" type="text" name="search" placeholder="Search funds..." value="@Context.Request.Query["search"]" />
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+</form>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Fund Name</th>
+            <th>Fund Code</th>
+            <th>NAV</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model == null || !Model.Any())
+        {
+            <tr>
+                <td colspan="4" class="text-muted">No funds found.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var fund in Model)
+            {
+                <tr>
+                    <td>@fund.FundName</td>
+                    <td>@fund.FundCode</td>
+                    <td>@fund.Nav</td>
+                    <td>@fund.Date</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

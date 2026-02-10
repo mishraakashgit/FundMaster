@@ -1,0 +1,9 @@
+@model IEnumerable<FundNavTracker.Models.NiftySensexDto>
+<div class="header-indices d-flex flex-wrap gap-3 small text-muted">
+    @foreach (var idx in Model)
+    {
+        <span class="index">
+            <strong>@idx.IndexName:</strong> @idx.CurrentValue (@idx.Change, @idx.PercentChange%)
+        </span>
+    }
+</div>
