@@ -3,16 +3,29 @@
 @{
     ViewData["Title"] = "Fund NAVs";
 }
-<h2 class="mb-3">Fund NAVs</h2>
-<form method="get" class="row g-2 align-items-center mb-3">
-    <div class="col-sm-6 col-md-4">
-        <input class="form-control" type="text" name="search" placeholder="Search funds..." value="@Context.Request.Query["search"]" />
+<section class="hero-card mb-4">
+    <div class="hero-content">
+        <p class="eyebrow">Live India Fund NAVs</p>
+        <h1 class="display-title">Track NAVs, instantly.</h1>
+        <p class="hero-subtitle">Search across Indian mutual funds and keep your watchlist lean and real-time ready.</p>
+        <form method="get" class="row g-2 align-items-center mt-3">
+            <div class="col-sm-7 col-lg-6">
+                <input class="form-control form-control-lg" type="text" name="search" placeholder="Search by fund name or code..." value="@Context.Request.Query["search"]" />
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-primary btn-lg" type="submit">Search</button>
+            </div>
+        </form>
     </div>
-    <div class="col-auto">
-        <button class="btn btn-primary" type="submit">Search</button>
+    <div class="hero-badge">
+        <div class="badge-title">NAV Feed</div>
+        <div class="badge-value">AMFI</div>
+        <div class="badge-note">Live source</div>
     </div>
-</form>
-<table class="table table-striped">
+</section>
+
+<div class="table-wrap">
+    <table class="table table-striped align-middle mb-0">
     <thead>
         <tr>
             <th>Fund Name</th>
@@ -21,24 +34,25 @@
             <th>Date</th>
         </tr>
     </thead>
-    <tbody>
-        @if (Model == null || !Model.Any())
-        {
-            <tr>
-                <td colspan="4" class="text-muted">No funds found.</td>
-            </tr>
-        }
-        else
-        {
-            @foreach (var fund in Model)
+        <tbody>
+            @if (Model == null || !Model.Any())
             {
                 <tr>
-                    <td>@fund.FundName</td>
-                    <td>@fund.FundCode</td>
-                    <td>@fund.Nav</td>
-                    <td>@fund.Date</td>
+                    <td colspan="4" class="text-muted">No funds found.</td>
                 </tr>
             }
-        }
-    </tbody>
-</table>
+            else
+            {
+                @foreach (var fund in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">@fund.FundName</td>
+                        <td>@fund.FundCode</td>
+                        <td>@fund.Nav</td>
+                        <td>@fund.Date</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
