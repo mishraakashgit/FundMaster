@@ -7,6 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<INavService, AmfiNavService>();
+builder.Services.AddSingleton<IAlertRepository, MongoAlertRepository>();
+builder.Services.AddSingleton<IEmailSender, SmtpEmailSender>();
+builder.Services.AddHostedService<NavAlertCheckerService>();
 builder.Services.AddSignalR();
 
 var app = builder.Build();
