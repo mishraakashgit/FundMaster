@@ -144,6 +144,42 @@ body {
   border: 1px solid var(--paper-200);
 }
 
+.alert-card {
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--paper-200);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.alert-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.section-subtitle {
+  margin: 0.25rem 0 0;
+  color: var(--ink-500);
+}
+
+.pill {
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(31, 75, 184, 0.1);
+  color: var(--accent-blue);
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
 .table thead th {
   background: var(--paper-100);
   color: var(--ink-700);

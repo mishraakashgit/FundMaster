@@ -3,6 +3,14 @@
 @{
     ViewData["Title"] = "Fund NAVs";
 }
+@if (TempData["AlertSuccess"] != null)
+{
+    <div class="alert alert-success" role="alert">@TempData["AlertSuccess"]</div>
+}
+@if (TempData["AlertError"] != null)
+{
+    <div class="alert alert-danger" role="alert">@TempData["AlertError"]</div>
+}
 <section class="hero-card mb-4">
     <div class="hero-content">
         <p class="eyebrow">Live India Fund NAVs</p>
@@ -22,6 +30,41 @@
         <div class="badge-value">AMFI</div>
         <div class="badge-note">Live source</div>
     </div>
+</section>
+
+<section class="alert-card mb-4">
+    <div class="alert-card-header">
+        <div>
+            <h2 class="section-title">Create NAV Alert</h2>
+            <p class="section-subtitle">Get an email when a fund hits your target NAV.</p>
+        </div>
+        <span class="pill">MVP 2.0</span>
+    </div>
+    <form method="post" asp-action="CreateAlert" class="row g-3">
+        @Html.AntiForgeryToken()
+        <div class="col-md-4">
+            <label class="form-label">Email</label>
+            <input name="UserEmail" type="email" class="form-control" placeholder="you@example.com" required />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Fund Code</label>
+            <input name="FundCode" type="text" class="form-control" placeholder="123456" required />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Target NAV</label>
+            <input name="TargetNav" type="number" step="0.01" class="form-control" placeholder="100.00" required />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Action</label>
+            <select name="Direction" class="form-select" required>
+                <option value="Buy">Buy</option>
+                <option value="Sell">Sell</option>
+            </select>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Create Alert</button>
+        </div>
+    </form>
 </section>
 
 <div class="table-wrap">
