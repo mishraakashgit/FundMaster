@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FundNavTracker.Models;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -11,21 +12,18 @@ namespace FundNavTracker.Services
 {
     public class NavAlertCheckerService : BackgroundService
     {
-        private readonly INavService _navService;
-        private readonly IAlertRepository _alertRepository;
+        private readonly IServiceScopeFactory _scopeFactory;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<NavAlertCheckerService> _logger;
         private readonly TimeSpan _interval;
 
         public NavAlertCheckerService(
-            INavService navService,
-            IAlertRepository alertRepository,
+            IServiceScopeFactory scopeFactory,
             IEmailSender emailSender,
             IConfiguration configuration,
             ILogger<NavAlertCheckerService> logger)
         {
-            _navService = navService;
-            _alertRepository = alertRepository;
+            _scopeFactory = scopeFactory;
             _emailSender = emailSender;
             _logger = logger;
 
@@ -39,10 +37,14 @@ namespace FundNavTracker.Services
             {
                 try
                 {
-                    var alerts = await _alertRepository.GetActiveAsync();
+                    using var scope = _scopeFactory.CreateScope();
+                    var navService = scope.ServiceProvider.GetRequiredService<INavService>();
+                    var alertRepository = scope.ServiceProvider.GetRequiredService<IAlertRepository>();
+
+                    var alerts = await alertRepository.GetActiveAsync();
                     foreach (var alert in alerts)
                     {
-                        var nav = await _navService.GetNavByFundCodeAsync(alert.FundCode);
+                        var nav = await navService.GetNavByFundCodeAsync(alert.FundCode);
                         if (nav == null)
                         {
                             continue;
@@ -73,7 +75,7 @@ namespace FundNavTracker.Services
                         {
                             alert.IsActive = false;
                             alert.TriggeredAtUtc = DateTime.UtcNow;
-                            await _alertRepository.UpdateAsync(alert);
+                            await alertRepository.UpdateAsync(alert);
                         }
                     }
                 }
